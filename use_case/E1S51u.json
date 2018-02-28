@@ -1,0 +1,213 @@
+{
+    "name": "E1S51u",
+    "workflow": {
+	"jobs": [
+	    {
+		"files": [
+		    {
+			"link": "output",
+			"name": "output-0.tar.gz-uploadTest",
+			"size": 12
+		    },
+		    {
+			"link": "input",
+			"name": "gate.sh.tar.gz",
+			"size": 73039
+		    },
+		    {
+			"link": "input",
+			"name": "release_Gate7.1_all.tar.gz",
+			"size": 501843312
+		    },
+		    {
+			"link": "input",
+			"name": "file-66406575341200.zip",
+			"size": 55600
+		    },
+		    {
+			"link": "output",
+			"name": "32923981-contrib.tgz",
+			"size": 2560
+		    }
+		],
+		"name": "GATE-32923981",
+		"runtime": 4169
+	    },
+	    {
+		"files": [
+		    {
+			"link": "output",
+			"name": "output-0.tar.gz-uploadTest",
+			"size": 12
+		    },
+		    {
+			"link": "input",
+			"name": "gate.sh.tar.gz",
+			"size": 73039
+		    },
+		    {
+			"link": "input",
+			"name": "release_Gate7.1_all.tar.gz",
+			"size": 501843312
+		    },
+		    {
+			"link": "input",
+			"name": "file-66406575341200.zip",
+			"size": 55600
+		    },
+		    {
+			"link": "output",
+			"name": "32923982-contrib.tgz",
+			"size": 2560
+		    }
+		],
+		"name": "GATE-32923982",
+		"runtime": 4303
+	    },
+	    {
+		"files": [
+		    {
+			"link": "output",
+			"name": "output-0.tar.gz-uploadTest",
+			"size": 12
+		    },
+		    {
+			"link": "input",
+			"name": "gate.sh.tar.gz",
+			"size": 73039
+		    },
+		    {
+			"link": "input",
+			"name": "release_Gate7.1_all.tar.gz",
+			"size": 501843312
+		    },
+		    {
+			"link": "input",
+			"name": "file-66406575341200.zip",
+			"size": 55600
+		    },
+		    {
+			"link": "output",
+			"name": "32923983-contrib.tgz",
+			"size": 2563
+		    }
+		],
+		"name": "GATE-32923983",
+		"runtime": 4292
+	    },
+	    {
+		"files": [
+		    {
+			"link": "output",
+			"name": "output-0.tar.gz-uploadTest",
+			"size": 12
+		    },
+		    {
+			"link": "input",
+			"name": "gate.sh.tar.gz",
+			"size": 73039
+		    },
+		    {
+			"link": "input",
+			"name": "release_Gate7.1_all.tar.gz",
+			"size": 501843312
+		    },
+		    {
+			"link": "input",
+			"name": "file-66406575341200.zip",
+			"size": 55600
+		    },
+		    {
+			"link": "output",
+			"name": "32923984-contrib.tgz",
+			"size": 2566
+		    }
+		],
+		"name": "GATE-32923984",
+		"runtime": 4229
+	    },
+	    {
+		"files": [
+		    {
+			"link": "output",
+			"name": "output-0.tar.gz-uploadTest",
+			"size": 12
+		    },
+		    {
+			"link": "input",
+			"name": "gate.sh.tar.gz",
+			"size": 73039
+		    },
+		    {
+			"link": "input",
+			"name": "release_Gate7.1_all.tar.gz",
+			"size": 501843312
+		    },
+		    {
+			"link": "input",
+			"name": "file-66406575341200.zip",
+			"size": 55600
+		    },
+		    {
+			"link": "output",
+			"name": "32923985-contrib.tgz",
+			"size": 2556
+		    }
+		],
+		"name": "GATE-32923985",
+		"runtime": 4229
+	    },
+	    {
+		"files": [
+		    {
+			"link": "output",
+			"name": "output-0.tar.gz-uploadTest",
+			"size": 12
+		    },
+		    {
+			"link": "input",
+			"name": "merge.sh.tar.gz",
+			"size": 90104427
+		    },
+		    {
+			"link": "input",
+			"name": "file-66406575341200.zip",
+			"size": 55600
+		    },
+		    {
+			"link": "input",
+			"name": "32923981-contrib.tgz",
+			"size": 2560
+		    },
+		    {
+			"link": "input",
+			"name": "32923982-contrib.tgz",
+			"size": 2560
+		    },
+		    {
+			"link": "input",
+			"name": "32923983-contrib.tgz",
+			"size": 2563
+		    },
+		    {
+			"link": "input",
+			"name": "32923984-contrib.tgz",
+			"size": 2566
+		    },
+		    {
+			"link": "input",
+			"name": "32923985-contrib.tgz",
+			"size": 2556
+		    },
+		    {
+			"link": "output",
+			"name": "32932773-final.tgz",
+			"size": 22
+		    }
+		],
+		"name": "MERGE-32932773",
+		"runtime": 909
+	    }
+	]
+    }
+}

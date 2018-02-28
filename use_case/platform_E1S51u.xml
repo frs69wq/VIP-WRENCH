@@ -1,0 +1,162 @@
+<?xml version='1.0'?>
+<!DOCTYPE platform SYSTEM "http://simgrid.gforge.inria.fr/simgrid/simgrid.dtd">
+<platform version="4.1">
+
+  <zone id="workflow-E1S51u" routing="Full">
+    <zone id="Services" routing="Full">
+      <host id="vip.creatis.insa-lyon.fr" speed="5Gf" core="48"/>
+      <host id="lfc-biomed.in2p3.fr" speed="5Gf" core="48"/>
+      <router id="Services_router"/>
+      <link id="Services_backbone" bandwidth="100Gbps" latency="750us"/>
+      <link id="vip.creatis.insa-lyon.fr_link" bandwidth="10Gbps" latency="500us"/>
+      <link id="lfc-biomed.in2p3.fr_link" bandwidth="10Gbps" latency="500us"/>
+      <route src="vip.creatis.insa-lyon.fr" dst="Services_router">
+        <link_ctn id="vip.creatis.insa-lyon.fr_link"/>
+        <link_ctn id="Services_backbone"/>
+      </route>
+      <route src="lfc-biomed.in2p3.fr" dst="Services_router">
+        <link_ctn id="lfc-biomed.in2p3.fr_link"/>
+        <link_ctn id="Services_backbone"/>
+      </route>
+      <route src="lfc-biomed.in2p3.fr" dst="vip.creatis.insa-lyon.fr">
+        <link_ctn id="lfc-biomed.in2p3.fr_link"/>
+        <link_ctn id="Services_backbone"/>
+        <link_ctn id="vip.creatis.insa-lyon.fr_link"/>
+      </route>
+    </zone>
+    <zone id="AS_SARA-MATRIX" routing="Full">
+      <cluster id="am--24cores-at-5000MIPS.gina.sara.nl" prefix="am-" radical="9027" suffix=".gina.sara.nl" speed="1f" core="24" bw="1000Mbps" lat="500us" sharing_policy="FATPIPE" limiter_link="2000Mbps" router_id="am--24cores-at-5000MIPS.gina.sara.nl_router">
+        <prop id="closeSE" value="tbn18.nikhef.nl"/>
+      </cluster>
+      <zone id="AS_SARA-MATRIX_gw" routing="Full">
+        <router id="AS_SARA-MATRIX_router"/>
+      </zone>
+      <link id="SARA-MATRIX_backbone" bandwidth="743129294845bps" latency="0"/>
+      <link id="am--24cores-at-5000MIPS.gina.sara.nl_link" bandwidth="743129294845bps" latency="750us"/>
+      <zoneRoute src="am--24cores-at-5000MIPS.gina.sara.nl" dst="AS_SARA-MATRIX_gw" gw_src="am--24cores-at-5000MIPS.gina.sara.nl_router" gw_dst="AS_SARA-MATRIX_router">
+        <link_ctn id="am--24cores-at-5000MIPS.gina.sara.nl_link"/>
+        <link_ctn id="SARA-MATRIX_backbone"/>
+      </zoneRoute>
+    </zone>
+    <zone id="AS_UKI-NORTHGRID-MAN-HEP" routing="Full">
+      <cluster id="wn-24cores-at-5330MIPS.tier2.hep.manchester.ac.uk" prefix="wn" radical="1904200,1905300,2206251,2206291" suffix=".tier2.hep.manchester.ac.uk" speed="1f" core="24" bw="1000Mbps" lat="500us" sharing_policy="FATPIPE" limiter_link="2000Mbps" router_id="wn-24cores-at-5330MIPS.tier2.hep.manchester.ac.uk_router">
+        <prop id="closeSE" value="bohr3226.tier2.hep.manchester.ac.uk"/>
+      </cluster>
+      <zone id="AS_UKI-NORTHGRID-MAN-HEP_gw" routing="Full">
+        <router id="AS_UKI-NORTHGRID-MAN-HEP_router"/>
+      </zone>
+      <link id="UKI-NORTHGRID-MAN-HEP_backbone" bandwidth="1655565565bps" latency="0"/>
+      <link id="wn-24cores-at-5330MIPS.tier2.hep.manchester.ac.uk_link" bandwidth="1655565565bps" latency="750us"/>
+      <zoneRoute src="wn-24cores-at-5330MIPS.tier2.hep.manchester.ac.uk" dst="AS_UKI-NORTHGRID-MAN-HEP_gw" gw_src="wn-24cores-at-5330MIPS.tier2.hep.manchester.ac.uk_router" gw_dst="AS_UKI-NORTHGRID-MAN-HEP_router">
+        <link_ctn id="wn-24cores-at-5330MIPS.tier2.hep.manchester.ac.uk_link"/>
+        <link_ctn id="UKI-NORTHGRID-MAN-HEP_backbone"/>
+      </zoneRoute>
+    </zone>
+    <zone id="AS_bohr3226.tier2.hep.manchester.ac.uk" routing="None">
+      <host id="bohr3226.tier2.hep.manchester.ac.uk" speed="5Gf" core="48"/>
+    </zone>
+    <zone id="AS_tbn18.nikhef.nl" routing="None">
+      <host id="tbn18.nikhef.nl" speed="5Gf" core="48"/>
+    </zone>
+    <zone id="AS_ccsrm02.in2p3.fr" routing="None">
+      <host id="ccsrm02.in2p3.fr" speed="5Gf" core="48"/>
+    </zone>
+    <zone id="AS_dc2-grid-64.brunel.ac.uk" routing="None">
+      <host id="dc2-grid-64.brunel.ac.uk" speed="5Gf" core="48"/>
+    </zone>
+    <zone id="AS_marsedpm.in2p3.fr" routing="None">
+      <host id="marsedpm.in2p3.fr" speed="5Gf" core="48"/>
+    </zone>
+    <link id="service_link" bandwidth="10Gbps" latency="500us"/>
+    <link id="bohr3226.tier2.hep.manchester.ac.uk_link_to" bandwidth="21113402bps" latency="0"/>
+    <link id="tbn18.nikhef.nl_link_to" bandwidth="7497bps" latency="0"/>
+    <link id="bohr3226.tier2.hep.manchester.ac.uk_link_from" bandwidth="1655565565bps" latency="0"/>
+    <link id="ccsrm02.in2p3.fr_link_from" bandwidth="30119175bps" latency="0"/>
+    <link id="dc2-grid-64.brunel.ac.uk_link_from" bandwidth="45855670bps" latency="0"/>
+    <link id="marsedpm.in2p3.fr_link_from" bandwidth="20079451bps" latency="0"/>
+    <link id="tbn18.nikhef.nl_link_from" bandwidth="743129294845bps" latency="0"/>
+    <link id="bohr3226.tier2.hep.manchester.ac.uk-UKI-NORTHGRID-MAN-HEP" bandwidth="1655565565bps" latency="500us"/>
+    <link id="tbn18.nikhef.nl-SARA-MATRIX" bandwidth="743129294845bps" latency="500us"/>
+    <link id="bohr3226.tier2.hep.manchester.ac.uk-SARA-MATRIX" bandwidth="2113814bps" latency="500us"/>
+    <link id="ccsrm02.in2p3.fr-UKI-NORTHGRID-MAN-HEP" bandwidth="30119175bps" latency="500us"/>
+    <link id="dc2-grid-64.brunel.ac.uk-SARA-MATRIX" bandwidth="45855670bps" latency="500us"/>
+    <link id="dc2-grid-64.brunel.ac.uk-UKI-NORTHGRID-MAN-HEP" bandwidth="45855670bps" latency="500us"/>
+    <link id="marsedpm.in2p3.fr-UKI-NORTHGRID-MAN-HEP" bandwidth="20079451bps" latency="500us"/>
+    <link id="SARA-MATRIX-tbn18.nikhef.nl" bandwidth="9897bps" latency="500us"/>
+    <link id="tbn18.nikhef.nl-UKI-NORTHGRID-MAN-HEP" bandwidth="30119175bps" latency="500us"/>
+    <link id="UKI-NORTHGRID-MAN-HEP-bohr3226.tier2.hep.manchester.ac.uk" bandwidth="21113402bps" latency="500us"/>
+    <link id="SARA-MATRIX-tbn18.nikhef.nl-am--24cores-at-5000MIPS.gina.sara.nl" bandwidth="743129294845bps" latency="500us"/>
+    <link id="UKI-NORTHGRID-MAN-HEP-bohr3226.tier2.hep.manchester.ac.uk-wn-24cores-at-5330MIPS.tier2.hep.manchester.ac.uk" bandwidth="1655565565bps" latency="500us"/>
+    <zoneRoute src="Services" dst="AS_UKI-NORTHGRID-MAN-HEP" gw_src="Services_router" gw_dst="AS_UKI-NORTHGRID-MAN-HEP_router">
+      <link_ctn id="service_link"/>
+    </zoneRoute>
+    <zoneRoute src="Services" dst="AS_SARA-MATRIX" gw_src="Services_router" gw_dst="AS_SARA-MATRIX_router">
+      <link_ctn id="service_link"/>
+    </zoneRoute>
+    <zoneRoute src="Services" dst="AS_bohr3226.tier2.hep.manchester.ac.uk" gw_src="Services_router" gw_dst="bohr3226.tier2.hep.manchester.ac.uk">
+      <link_ctn id="service_link"/>
+    </zoneRoute>
+    <zoneRoute src="Services" dst="AS_tbn18.nikhef.nl" gw_src="Services_router" gw_dst="tbn18.nikhef.nl">
+      <link_ctn id="service_link"/>
+    </zoneRoute>
+    <zoneRoute src="Services" dst="AS_ccsrm02.in2p3.fr" gw_src="Services_router" gw_dst="ccsrm02.in2p3.fr">
+      <link_ctn id="service_link"/>
+    </zoneRoute>
+    <zoneRoute src="Services" dst="AS_dc2-grid-64.brunel.ac.uk" gw_src="Services_router" gw_dst="dc2-grid-64.brunel.ac.uk">
+      <link_ctn id="service_link"/>
+    </zoneRoute>
+    <zoneRoute src="Services" dst="AS_marsedpm.in2p3.fr" gw_src="Services_router" gw_dst="marsedpm.in2p3.fr">
+      <link_ctn id="service_link"/>
+    </zoneRoute>
+    <zoneRoute src="AS_UKI-NORTHGRID-MAN-HEP" dst="AS_bohr3226.tier2.hep.manchester.ac.uk" gw_src="AS_UKI-NORTHGRID-MAN-HEP_router" gw_dst="bohr3226.tier2.hep.manchester.ac.uk" symmetrical="NO">
+      <link_ctn id="UKI-NORTHGRID-MAN-HEP-bohr3226.tier2.hep.manchester.ac.uk"/>
+      <link_ctn id="bohr3226.tier2.hep.manchester.ac.uk_link_to"/>
+    </zoneRoute>
+    <zoneRoute src="AS_SARA-MATRIX" dst="AS_tbn18.nikhef.nl" gw_src="AS_SARA-MATRIX_router" gw_dst="tbn18.nikhef.nl" symmetrical="NO">
+      <link_ctn id="SARA-MATRIX-tbn18.nikhef.nl"/>
+      <link_ctn id="tbn18.nikhef.nl_link_to"/>
+    </zoneRoute>
+    <zoneRoute src="AS_bohr3226.tier2.hep.manchester.ac.uk" dst="AS_UKI-NORTHGRID-MAN-HEP" gw_src="bohr3226.tier2.hep.manchester.ac.uk" gw_dst="AS_UKI-NORTHGRID-MAN-HEP_router" symmetrical="NO">
+      <link_ctn id="bohr3226.tier2.hep.manchester.ac.uk-UKI-NORTHGRID-MAN-HEP"/>
+      <link_ctn id="bohr3226.tier2.hep.manchester.ac.uk_link_from"/>
+    </zoneRoute>
+    <zoneRoute src="AS_tbn18.nikhef.nl" dst="AS_UKI-NORTHGRID-MAN-HEP" gw_src="tbn18.nikhef.nl" gw_dst="AS_UKI-NORTHGRID-MAN-HEP_router">
+      <link_ctn id="tbn18.nikhef.nl-UKI-NORTHGRID-MAN-HEP"/>
+      <link_ctn id="tbn18.nikhef.nl_link_from"/>
+    </zoneRoute>
+    <zoneRoute src="AS_ccsrm02.in2p3.fr" dst="AS_UKI-NORTHGRID-MAN-HEP" gw_src="ccsrm02.in2p3.fr" gw_dst="AS_UKI-NORTHGRID-MAN-HEP_router">
+      <link_ctn id="ccsrm02.in2p3.fr-UKI-NORTHGRID-MAN-HEP"/>
+      <link_ctn id="ccsrm02.in2p3.fr_link_from"/>
+    </zoneRoute>
+    <zoneRoute src="AS_dc2-grid-64.brunel.ac.uk" dst="AS_UKI-NORTHGRID-MAN-HEP" gw_src="dc2-grid-64.brunel.ac.uk" gw_dst="AS_UKI-NORTHGRID-MAN-HEP_router">
+      <link_ctn id="dc2-grid-64.brunel.ac.uk-UKI-NORTHGRID-MAN-HEP"/>
+      <link_ctn id="dc2-grid-64.brunel.ac.uk_link_from"/>
+    </zoneRoute>
+    <zoneRoute src="AS_marsedpm.in2p3.fr" dst="AS_UKI-NORTHGRID-MAN-HEP" gw_src="marsedpm.in2p3.fr" gw_dst="AS_UKI-NORTHGRID-MAN-HEP_router">
+      <link_ctn id="marsedpm.in2p3.fr-UKI-NORTHGRID-MAN-HEP"/>
+      <link_ctn id="marsedpm.in2p3.fr_link_from"/>
+    </zoneRoute>
+    <zoneRoute src="AS_bohr3226.tier2.hep.manchester.ac.uk" dst="AS_SARA-MATRIX" gw_src="bohr3226.tier2.hep.manchester.ac.uk" gw_dst="AS_SARA-MATRIX_router">
+      <link_ctn id="bohr3226.tier2.hep.manchester.ac.uk-SARA-MATRIX"/>
+      <link_ctn id="bohr3226.tier2.hep.manchester.ac.uk_link_from"/>
+    </zoneRoute>
+    <zoneRoute src="AS_tbn18.nikhef.nl" dst="AS_SARA-MATRIX" gw_src="tbn18.nikhef.nl" gw_dst="AS_SARA-MATRIX_router" symmetrical="NO">
+      <link_ctn id="tbn18.nikhef.nl-SARA-MATRIX"/>
+      <link_ctn id="tbn18.nikhef.nl_link_from"/>
+    </zoneRoute>
+    <zoneRoute src="AS_dc2-grid-64.brunel.ac.uk" dst="AS_SARA-MATRIX" gw_src="dc2-grid-64.brunel.ac.uk" gw_dst="AS_SARA-MATRIX_router">
+      <link_ctn id="dc2-grid-64.brunel.ac.uk-SARA-MATRIX"/>
+      <link_ctn id="dc2-grid-64.brunel.ac.uk_link_from"/>
+    </zoneRoute>
+    <bypassASroute src="AS_tbn18.nikhef.nl" dst="am--24cores-at-5000MIPS.gina.sara.nl" gw_src="tbn18.nikhef.nl" gw_dst="am--24cores-at-5000MIPS.gina.sara.nl_router">
+      <link_ctn id="am--24cores-at-5000MIPS.gina.sara.nl_link"/>
+      <link_ctn id="SARA-MATRIX-tbn18.nikhef.nl-am--24cores-at-5000MIPS.gina.sara.nl"/>
+      <link_ctn id="tbn18.nikhef.nl_link_from"/>
+    </bypassASroute>
+    <bypassASroute src="AS_bohr3226.tier2.hep.manchester.ac.uk" dst="wn-24cores-at-5330MIPS.tier2.hep.manchester.ac.uk" gw_src="bohr3226.tier2.hep.manchester.ac.uk" gw_dst="wn-24cores-at-5330MIPS.tier2.hep.manchester.ac.uk_router">
+      <link_ctn id="wn-24cores-at-5330MIPS.tier2.hep.manchester.ac.uk_link"/>
+      <link_ctn id="UKI-NORTHGRID-MAN-HEP-bohr3226.tier2.hep.manchester.ac.uk-wn-24cores-at-5330MIPS.tier2.hep.manchester.ac.uk"/>
+      <link_ctn id="bohr3226.tier2.hep.manchester.ac.uk_link_from"/>
+    </bypassASroute>
+  </zone>
+</platform>

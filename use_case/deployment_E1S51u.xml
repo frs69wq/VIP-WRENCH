@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE platform SYSTEM "http://simgrid.gforge.inria.fr/simgrid/simgrid.dtd">
+<platform version="4">
+  <process host="vip.creatis.insa-lyon.fr" function="VIPServer"/>
+  <process host="bohr3226.tier2.hep.manchester.ac.uk" function="SE">
+    <argument value="simgrid_files/LfcCatalog_workflow-E1S51u.csv"/>
+  </process>
+  <process host="tbn18.nikhef.nl" function="SE">
+    <argument value="simgrid_files/LfcCatalog_workflow-E1S51u.csv"/>
+  </process>
+  <process host="dc2-grid-64.brunel.ac.uk" function="SE">
+    <argument value="simgrid_files/LfcCatalog_workflow-E1S51u.csv"/>
+  </process>
+  <process host="marsedpm.in2p3.fr" function="SE">
+    <argument value="simgrid_files/LfcCatalog_workflow-E1S51u.csv"/>
+  </process>
+  <process host="ccsrm02.in2p3.fr" function="DefaultSE">
+    <argument value="simgrid_files/LfcCatalog_workflow-E1S51u.csv"/>
+  </process>
+  <process host="lfc-biomed.in2p3.fr" function="DefaultLFC">
+    <argument value="simgrid_files/LfcCatalog_workflow-E1S51u.csv"/>
+  </process>
+  <process host="wn2206251.tier2.hep.manchester.ac.uk" function="Gate" start_time="62295">
+    <argument value="32923981"/>
+    <argument value="4169"/>
+    <argument value="2560"/>
+    <argument value="ccsrm02.in2p3.fr"/>
+    <argument value="bohr3226.tier2.hep.manchester.ac.uk"/>
+    <argument value="dc2-grid-64.brunel.ac.uk"/>
+  </process>
+  <process host="wn2206291.tier2.hep.manchester.ac.uk" function="Gate" start_time="62159">
+    <argument value="32923982"/>
+    <argument value="4303"/>
+    <argument value="2560"/>
+    <argument value="tbn18.nikhef.nl"/>
+    <argument value="bohr3226.tier2.hep.manchester.ac.uk"/>
+    <argument value="dc2-grid-64.brunel.ac.uk"/>
+  </process>
+  <process host="wn1905300.tier2.hep.manchester.ac.uk" function="Gate" start_time="62204">
+    <argument value="32923983"/>
+    <argument value="4292"/>
+    <argument value="2563"/>
+    <argument value="marsedpm.in2p3.fr"/>
+    <argument value="bohr3226.tier2.hep.manchester.ac.uk"/>
+    <argument value="dc2-grid-64.brunel.ac.uk"/>
+  </process>
+  <process host="wn1904200.tier2.hep.manchester.ac.uk" function="Gate" start_time="62227">
+    <argument value="32923984"/>
+    <argument value="4229"/>
+    <argument value="2566"/>
+    <argument value="tbn18.nikhef.nl"/>
+    <argument value="bohr3226.tier2.hep.manchester.ac.uk"/>
+    <argument value="dc2-grid-64.brunel.ac.uk"/>
+  </process>
+  <process host="wn2206291.tier2.hep.manchester.ac.uk" function="Gate" start_time="62227">
+    <argument value="32923985"/>
+    <argument value="4229"/>
+    <argument value="2556"/>
+    <argument value="ccsrm02.in2p3.fr"/>
+    <argument value="bohr3226.tier2.hep.manchester.ac.uk"/>
+    <argument value="dc2-grid-64.brunel.ac.uk"/>
+  </process>
+  <process host="am-9027.gina.sara.nl" function="Merge">
+    <argument value="32932773"/>
+    <argument value="22"/>
+    <argument value="909"/>
+    <argument value="tbn18.nikhef.nl"/>
+    <argument value="dc2-grid-64.brunel.ac.uk"/>
+  </process>
+</platform>
