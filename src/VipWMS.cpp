@@ -82,9 +82,6 @@ int VipWMS::main()
     WRENCH_INFO("Workflow execution is incomplete!");
   }
 
-  WRENCH_INFO("Simple WMS Daemon is shutting all services");
-  this->shutdownAllServices();
-
   WRENCH_INFO("Simple WMS Daemon started on host %s terminating", S4U_Simulation::getHostName().c_str());
 
   this->job_manager.reset();
