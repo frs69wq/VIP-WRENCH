@@ -19,17 +19,19 @@ class VipWMS : public WMS {
 public:
   VipWMS(std::unique_ptr<StandardJobScheduler> StandardJobscheduler,
          std::unique_ptr<PilotJobScheduler> PilotJobscheduler, const std::set<ComputeService*>& compute_services,
-         const std::set<StorageService*>& storage_services, const std::string& hostname);
+         const std::set<StorageService*>& storage_services, wrench::FileRegistryService* file_registry_service,
+         const std::string& hostname);
   ~VipWMS() { delete available_compute_resources; }
 
 protected:
   void processEventStandardJobFailure(std::unique_ptr<WorkflowExecutionEvent>) override;
   void processEventPilotJobStart(std::unique_ptr<WorkflowExecutionEvent>) override;
   std::deque<ComputeService*>* getAvailableComputeResources() { return available_compute_resources; }
+
 private:
   int main() override;
 
-  std::unique_ptr<JobManager> job_manager;
+  std::shared_ptr<JobManager> job_manager;
   std::deque<ComputeService*>* available_compute_resources;
   /** @brief Whether the workflow execution should be aborted */
   bool abort = false;

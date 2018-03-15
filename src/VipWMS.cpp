@@ -18,9 +18,9 @@ namespace wrench {
 VipWMS::VipWMS(std::unique_ptr<StandardJobScheduler> standard_job_scheduler,
                std::unique_ptr<PilotJobScheduler> pilot_job_scheduler,
                const std::set<ComputeService*>& compute_services, const std::set<StorageService*>& storage_services,
-               const std::string& hostname)
+               wrench::FileRegistryService* file_registry_service, const std::string& hostname)
     : WMS(std::move(standard_job_scheduler), std::move(pilot_job_scheduler), compute_services, storage_services,
-          hostname, "VIP")
+          {} /* no network proximity service */, file_registry_service, hostname, "VIP")
 {
   available_compute_resources = new std::deque<ComputeService*>;
 }
@@ -39,9 +39,9 @@ int VipWMS::main()
   this->job_manager = this->createJobManager();
 
   // Create a data movement manager
-  std::unique_ptr<DataMovementManager> data_movement_manager = this->createDataMovementManager();
+  std::shared_ptr<DataMovementManager> data_movement_manager = this->createDataMovementManager();
 
-  this->pilot_job_scheduler->schedulePilotJobs(this->getRunningComputeServices());
+  this->pilot_job_scheduler->schedulePilotJobs(this->getAvailableComputeServices());
 
   while (true) {
     // Get the ready tasks

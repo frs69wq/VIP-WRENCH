@@ -28,7 +28,7 @@ int main(int argc, char** argv)
   char* platform_file = argv[1];
   char* workflow_file = argv[2];
 
-  /* Reading and parsing the workflow description file to create a  wrench::Workflow object */
+  /* Reading and parsing the workflow description file to create a wrench::Workflow object */
   std::cerr << "Loading workflow..." << std::endl;
   wrench::Workflow workflow;
   workflow.loadFromJSON(workflow_file);
@@ -50,9 +50,9 @@ int main(int argc, char** argv)
   std::vector<wrench::StorageService*> storage_services;
   for (auto s : storage_elements) {
     std::cerr << "Instantiating a SimpleStorageService on " << s << "..." << std::endl;
-    storage_services.push_back(simulation.add(
-        std::unique_ptr<wrench::SimpleStorageService>(new wrench::SimpleStorageService(s, 1.0e12)))); // 1TB
+    storage_services.push_back(simulation.add(new wrench::SimpleStorageService(s, 1.0e12))); // 1TB
   }
+  wrench::StorageService* x = storage_services.at(4);
 
   /* Construct (very specific) lists of hosts on which to run tasks */
   std::vector<std::string> sara_matrix_hosts           = {"am-9027.gina.sara.nl"};
@@ -64,19 +64,19 @@ int main(int argc, char** argv)
   std::string wms_host = "vip.creatis.insa-lyon.fr";
 
   wrench::ComputeService* sara_matrix_batch_service =
-      new wrench::BatchService(wms_host, true, true, sara_matrix_hosts,
+      new wrench::BatchService(sara_matrix_hosts.front(), true, true, sara_matrix_hosts,
                                storage_services.at(4), // tbn18.nikhef.nl
                                {{wrench::BatchServiceProperty::STOP_DAEMON_MESSAGE_PAYLOAD, "2048"}});
 
   wrench::ComputeService* uki_northgrid_man_hep_service =
-      new wrench::BatchService(wms_host, true, true, uki_northgrid_man_hep_hosts,
+      new wrench::BatchService(uki_northgrid_man_hep_hosts.front(), true, true, uki_northgrid_man_hep_hosts,
                                storage_services.at(0), // bohr3226.tier2
                                {{wrench::BatchServiceProperty::STOP_DAEMON_MESSAGE_PAYLOAD, "2048"}});
 
   /* Add the compute services to the simulation, catching a possible exception */
   try {
-    simulation.add(std::unique_ptr<wrench::ComputeService>(sara_matrix_batch_service));
-    simulation.add(std::unique_ptr<wrench::ComputeService>(uki_northgrid_man_hep_service));
+    simulation.add(sara_matrix_batch_service);
+    simulation.add(uki_northgrid_man_hep_service);
   } catch (std::invalid_argument& e) {
     std::cerr << "Error: " << e.what() << std::endl;
     std::exit(1);
@@ -94,22 +94,15 @@ int main(int argc, char** argv)
   std::string file_registry_service_host = "lfc-biomed.in2p3.fr";
   std::cerr << "Instantiating a FileRegistryService on " << file_registry_service_host << "..." << std::endl;
 
-  std::unique_ptr<wrench::FileRegistryService> file_registry_service(
-      new wrench::FileRegistryService(file_registry_service_host));
-  simulation.setFileRegistryService(std::move(file_registry_service));
+  wrench::FileRegistryService* file_registry_service = new wrench::FileRegistryService(file_registry_service_host);
+  simulation.setFileRegistryService(file_registry_service);
 
-  /* Instantiate a WMS, to be started on some host (wms_host), which is responsible for executing the workflow, and
-   * uses a scheduler (CloudScheduler). That scheduler is instantiated with the cloud service, the list of hosts
-   * available for running tasks, and also provided a pointer to the simulation object.
-   *
-   * The WMS implementation is in SimpleWMS.[cpp|h].
-   */
+  /* Instantiate a WMS, to be started on some host (wms_host), which is responsible for executing the workflow */
   std::cerr << "Instantiating a WMS on " << wms_host << "..." << std::endl;
-  wrench::WMS* wms = simulation.add(std::unique_ptr<wrench::WMS>(
-      new wrench::VipWMS(std::unique_ptr<wrench::VipStandardJobScheduler>(
-                             new wrench::VipStandardJobScheduler(simulation.getFileRegistryService())),
-                         std::unique_ptr<wrench::VipPilotJobScheduler>(new wrench::VipPilotJobScheduler(&workflow)),
-                         compute_services, {storage_services.begin(), storage_services.end()}, wms_host)));
+  wrench::WMS* wms = simulation.add(new wrench::VipWMS(
+      std::unique_ptr<wrench::VipStandardJobScheduler>(new wrench::VipStandardJobScheduler(file_registry_service)),
+      std::unique_ptr<wrench::VipPilotJobScheduler>(new wrench::VipPilotJobScheduler(&workflow)), compute_services,
+      {storage_services.begin(), storage_services.end()}, file_registry_service, wms_host));
 
   wms->addWorkflow(&workflow, 0);
 
