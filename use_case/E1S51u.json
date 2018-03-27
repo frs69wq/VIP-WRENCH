@@ -30,8 +30,10 @@
 			"size": 2560
 		    }
 		],
+		"type": "compute",
 		"name": "GATE-32923981",
-		"runtime": 4169
+		"runtime": 4169,
+		"parents": []
 	    },
 	    {
 		"files": [
@@ -61,8 +63,10 @@
 			"size": 2560
 		    }
 		],
+		"type": "compute",
 		"name": "GATE-32923982",
-		"runtime": 4303
+		"runtime": 4303,
+		"parents": []
 	    },
 	    {
 		"files": [
@@ -92,8 +96,10 @@
 			"size": 2563
 		    }
 		],
+		"type": "compute",
 		"name": "GATE-32923983",
-		"runtime": 4292
+		"runtime": 4292,
+		"parents": []
 	    },
 	    {
 		"files": [
@@ -123,8 +129,10 @@
 			"size": 2566
 		    }
 		],
+		"type": "compute",
 		"name": "GATE-32923984",
-		"runtime": 4229
+		"runtime": 4229,
+		"parents": []
 	    },
 	    {
 		"files": [
@@ -154,8 +162,10 @@
 			"size": 2556
 		    }
 		],
+		"type": "compute",
 		"name": "GATE-32923985",
-		"runtime": 4229
+		"runtime": 4229,
+		"parents": []
 	    },
 	    {
 		"files": [
@@ -205,8 +215,16 @@
 			"size": 22
 		    }
 		],
+		"type": "compute",
 		"name": "MERGE-32932773",
-		"runtime": 909
+		"runtime": 909,
+		"parents": [		    
+		    "GATE-32923981",
+		    "GATE-32923982",
+		    "GATE-32923983",
+		    "GATE-32923984",
+		    "GATE-32923985"
+		]
 	    }
 	]
     }
