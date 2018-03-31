@@ -25,13 +25,6 @@ int main(int argc, char** argv)
     exit(1);
   }
 
-  /* Reading and parsing the workflow description file to create a wrench::Workflow object */
-  std::cerr << "Loading workflow..." << std::endl;
-  wrench::Workflow workflow;
-  workflow.loadFromJSON(argv[2]);
-  std::cerr << "The workflow has " << workflow.getNumberOfTasks() << " tasks " << std::endl;
-  std::cerr.flush();
-
   /* Reading and parsing the platform description file to instantiate a simulated platform */
   std::cerr << "Instantiating SimGrid platform..." << std::endl;
   simulation.instantiatePlatform(argv[1]);
@@ -84,6 +77,13 @@ int main(int argc, char** argv)
       std::unique_ptr<wrench::VipStandardJobScheduler>(new wrench::VipStandardJobScheduler(file_registry_service)),
       std::unique_ptr<wrench::VipPilotJobScheduler>(new wrench::VipPilotJobScheduler()), compute_services,
       {storage_services.begin(), storage_services.end()}, file_registry_service, VIPServer));
+
+  /* Reading and parsing the workflow description file to create a wrench::Workflow object */
+  std::cerr << "Loading workflow..." << std::endl;
+  wrench::Workflow workflow;
+  workflow.loadFromJSON(argv[2]);
+  std::cerr << "The workflow has " << workflow.getNumberOfTasks() << " tasks " << std::endl;
+  std::cerr.flush();
 
   wms->addWorkflow(&workflow, 0);
 
