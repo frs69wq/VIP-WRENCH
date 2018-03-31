@@ -15,11 +15,13 @@
 namespace wrench {
 
 class VipPilotJobScheduler : public PilotJobScheduler {
-  Workflow* workflow;
+  unsigned long how_many = 0;
 
 public:
-  VipPilotJobScheduler(Workflow* workflow) : workflow(workflow) {}
+  VipPilotJobScheduler()  = default;
+  ~VipPilotJobScheduler() = default;
 
+  void scheduleNPilotJobs(unsigned long how_many, const std::set<ComputeService*>& compute_services);
   void schedulePilotJobs(const std::set<ComputeService*>& compute_services);
 };
 }

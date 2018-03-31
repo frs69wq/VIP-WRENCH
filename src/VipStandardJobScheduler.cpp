@@ -27,8 +27,8 @@ void VipStandardJobScheduler::scheduleTasks(const std::set<ComputeService*>& com
     locations.insert({f, *(replica_locations.begin())});
   }
 
-  WorkflowJob* job = (WorkflowJob*)this->job_manager->createStandardJob(task->second, locations);
-  this->job_manager->submitJob(job, *(compute_services.begin()));
+  WorkflowJob* job = (WorkflowJob*)this->getJobManager()->createStandardJob(task->second, locations);
+  this->getJobManager()->submitJob(job, *(compute_services.begin()));
 
   // FIXME: this should be here, but we have to register files manually for now
   std::set<wrench::WorkflowFile*> output_files = task->second.front()->getOutputFiles();

@@ -82,7 +82,7 @@ int main(int argc, char** argv)
   std::cerr << "Instantiating a WMS on " << VIPServer << "..." << std::endl;
   wrench::WMS* wms = simulation.add(new wrench::VipWMS(
       std::unique_ptr<wrench::VipStandardJobScheduler>(new wrench::VipStandardJobScheduler(file_registry_service)),
-      std::unique_ptr<wrench::VipPilotJobScheduler>(new wrench::VipPilotJobScheduler(&workflow)), compute_services,
+      std::unique_ptr<wrench::VipPilotJobScheduler>(new wrench::VipPilotJobScheduler()), compute_services,
       {storage_services.begin(), storage_services.end()}, file_registry_service, VIPServer));
 
   wms->addWorkflow(&workflow, 0);

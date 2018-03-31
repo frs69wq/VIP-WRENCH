@@ -8,6 +8,7 @@
  */
 
 #include "VipWMS.hpp"
+#include "VipPilotJobScheduler.hpp"
 
 #include <iostream>
 
@@ -41,7 +42,8 @@ int VipWMS::main()
   // Create a data movement manager
   std::shared_ptr<DataMovementManager> data_movement_manager = this->createDataMovementManager();
 
-  this->pilot_job_scheduler->schedulePilotJobs(this->getAvailableComputeServices());
+  static_cast<VipPilotJobScheduler*>(this->pilot_job_scheduler.get())
+      ->scheduleNPilotJobs(this->workflow->getNumberOfTasks(), this->getAvailableComputeServices());
 
   while (true) {
     // Get the ready tasks

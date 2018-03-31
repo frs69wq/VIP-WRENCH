@@ -12,6 +12,11 @@
 XBT_LOG_NEW_DEFAULT_CATEGORY(vip_pilot_job_scheduler, "Log category for VIP Scheduler");
 
 namespace wrench {
+void VipPilotJobScheduler::scheduleNPilotJobs(unsigned long how_many, const std::set<ComputeService*>& compute_services)
+{
+  this->how_many = how_many;
+  schedulePilotJobs(compute_services);
+}
 
 void VipPilotJobScheduler::schedulePilotJobs(const std::set<ComputeService*>& compute_services)
 {
@@ -25,8 +30,8 @@ void VipPilotJobScheduler::schedulePilotJobs(const std::set<ComputeService*>& co
 
   std::vector<WorkflowJob*> pilots;
 
-  for (unsigned int i = 0; i < this->workflow->getNumberOfTasks(); i++) {
-    pilots.push_back(static_cast<WorkflowJob*>(this->job_manager->createPilotJob(workflow, 1, 1, 0.0, 36000)));
+  for (unsigned int i = 0; i < this->how_many; i++) {
+    pilots.push_back(static_cast<WorkflowJob*>(this->getJobManager()->createPilotJob(1, 1, 0.0, 36000)));
   }
   std::map<std::string, std::string> batch_job_args;
   batch_job_args["-N"] = "1";
@@ -34,8 +39,8 @@ void VipPilotJobScheduler::schedulePilotJobs(const std::set<ComputeService*>& co
   batch_job_args["-c"] = "1";   // number of cores per node
 
   for (auto it = pilots.begin() + 1; it != pilots.end(); ++it)
-    this->job_manager->submitJob(*it, big_cluster, batch_job_args);
+    this->getJobManager()->submitJob(*it, big_cluster, batch_job_args);
 
-  this->job_manager->submitJob(pilots.front(), small_cluster, batch_job_args);
+  this->getJobManager()->submitJob(pilots.front(), small_cluster, batch_job_args);
 }
 }
