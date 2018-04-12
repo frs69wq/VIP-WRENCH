@@ -7,6 +7,8 @@
  * version.
  */
 
+#include <boost/algorithm/string.hpp>
+#include <fstream>
 #include <iostream>
 #include <wrench.h>
 
@@ -14,11 +16,46 @@
 #include "VipStandardJobScheduler.hpp"
 #include "VipWMS.hpp"
 
-// TODO move this function in a utils.cpp file
+// TODO move these functions in a utils.cpp file
 static wrench::StorageService* getStorageServiceByname(std::set<wrench::StorageService*> service_set, std::string name)
 {
   return *(std::find_if(service_set.begin(), service_set.end(),
                         [&name](wrench::StorageService* s) -> bool { return s->getHostname() == name; }));
+}
+
+static void stageFilesFromCsv(wrench::Simulation* simulation, wrench::Workflow* workflow,
+                              std::set<wrench::StorageService*> storage_services, std::string filename)
+{
+  std::string line;
+  std::ifstream* fs = new std::ifstream();
+  fs->open(filename.c_str(), std::ifstream::in);
+  do {
+    std::getline(*fs, line);
+    boost::trim(line);
+    if (line.length() > 0) {
+      std::vector<std::string> tokens;
+      boost::split(tokens, line, boost::is_any_of(","), boost::token_compress_on);
+
+      std::vector<std::string> path_elms;
+      boost::split(path_elms, tokens[0], boost::is_any_of("/"), boost::token_compress_on);
+      std::string name = path_elms.back();
+
+      unsigned long long size = std::stoull(tokens[1]);
+      std::vector<std::string> locations;
+      ;
+      boost::split(locations, tokens[2], boost::is_any_of(":"), boost::token_compress_on);
+
+      for (auto loc : locations) {
+        try {
+          simulation->stageFile(workflow->getWorkflowFileByID(name), getStorageServiceByname(storage_services, loc));
+        } catch (std::runtime_error& e) {
+          std::cerr << "Exception: " << e.what() << std::endl;
+        }
+      }
+    }
+  } while (not fs->eof());
+
+  delete fs;
 }
 
 int main(int argc, char** argv)
@@ -27,8 +64,8 @@ int main(int argc, char** argv)
 
   simulation.init(&argc, argv);
 
-  if (argc != 3) {
-    std::cerr << "Usage: " << argv[0] << " <xml platform file> <workflow file>" << std::endl;
+  if (argc != 4) {
+    std::cerr << "Usage: " << argv[0] << " <xml platform file> <workflow file> <catalog file>" << std::endl;
     exit(1);
   }
 
@@ -101,27 +138,7 @@ int main(int argc, char** argv)
    * staged on the storage service.
    */
   std::cerr << "Staging input files..." << std::endl;
-  std::map<std::string, wrench::WorkflowFile*> input_files = workflow.getInputFiles();
-  for (auto f : input_files)
-    std::cout << f.second->getId() << std::endl;
-  std::cout.flush();
-  try {
-    simulation.stageFile(input_files.at("gate.sh.tar.gz"),
-                         getStorageServiceByname(storage_services, "ccsrm02.in2p3.fr"));
-    simulation.stageFile(input_files.at("gate.sh.tar.gz"),
-                         getStorageServiceByname(storage_services, "marsedpm.in2p3.fr"));
-    simulation.stageFile(input_files.at("gate.sh.tar.gz"),
-                         getStorageServiceByname(storage_services, "tbn18.nikhef.nl"));
-    simulation.stageFile(input_files.at("release_Gate7.1_all.tar.gz"),
-                         getStorageServiceByname(storage_services, "bohr3226.tier2.hep.manchester.ac.uk"));
-    simulation.stageFile(input_files.at("file-66406575341200.zip"),
-                         getStorageServiceByname(storage_services, "dc2-grid-64.brunel.ac.uk"));
-    simulation.stageFile(input_files.at("merge.sh.tar.gz"),
-                         getStorageServiceByname(storage_services, "tbn18.nikhef.nl"));
-  } catch (std::runtime_error& e) {
-    std::cerr << "Exception: " << e.what() << std::endl;
-    return 0;
-  }
+  stageFilesFromCsv(&simulation, &workflow, storage_services, argv[3]);
 
   /* Launch the simulation. This call only returns when the simulation is complete. */
   std::cerr << "Launching the Simulation..." << std::endl;
