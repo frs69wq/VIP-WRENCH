@@ -24,8 +24,8 @@ public:
   ~VipWMS() { delete available_compute_resources; }
 
 protected:
-  void processEventStandardJobFailure(std::unique_ptr<WorkflowExecutionEvent>) override;
-  void processEventPilotJobStart(std::unique_ptr<WorkflowExecutionEvent>) override;
+  void processEventStandardJobFailure(std::unique_ptr<StandardJobFailedEvent>);
+  void processEventPilotJobStart(std::unique_ptr<PilotJobStartedEvent>);
   std::deque<ComputeService*>* getAvailableComputeResources() { return available_compute_resources; }
 
 private:

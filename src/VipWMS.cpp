@@ -96,20 +96,18 @@ int VipWMS::main()
  *
  * @param event: a workflow execution event
  */
-void VipWMS::processEventStandardJobFailure(std::unique_ptr<WorkflowExecutionEvent> event)
+void VipWMS::processEventStandardJobFailure(std::unique_ptr<StandardJobFailedEvent> event)
 {
-  auto job = (StandardJob*)(event->job);
   WRENCH_INFO("Notified that a standard job has failed (all its tasks are back "
               "in the ready state)");
   WRENCH_INFO("CauseType: %s", event->failure_cause->toString().c_str());
-  this->job_manager->forgetJob(job);
+  this->job_manager->forgetJob(event->standard_job);
   WRENCH_INFO("As a SimpleWMS, I abort as soon as there is a failure");
   this->abort = true;
 }
 
-void VipWMS::processEventPilotJobStart(std::unique_ptr<WorkflowExecutionEvent> event)
+void VipWMS::processEventPilotJobStart(std::unique_ptr<PilotJobStartedEvent> event)
 {
-  auto job = dynamic_cast<PilotJob*>(event->job);
-  this->available_compute_resources->push_back(job->getComputeService());
+  this->available_compute_resources->push_back(event->pilot_job->getComputeService());
 }
 }
