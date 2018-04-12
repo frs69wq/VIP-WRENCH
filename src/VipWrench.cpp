@@ -14,6 +14,13 @@
 #include "VipStandardJobScheduler.hpp"
 #include "VipWMS.hpp"
 
+// TODO move this function in a utils.cpp file
+static wrench::StorageService* getStorageServiceByname(std::set<wrench::StorageService*> service_set, std::string name)
+{
+  return *(std::find_if(service_set.begin(), service_set.end(),
+                        [&name](wrench::StorageService* s) -> bool { return s->getHostname() == name; }));
+}
+
 int main(int argc, char** argv)
 {
   wrench::Simulation simulation;
@@ -34,10 +41,10 @@ int main(int argc, char** argv)
                                                "ccsrm02.in2p3.fr", "dc2-grid-64.brunel.ac.uk", "marsedpm.in2p3.fr"};
 
   /* Instantiate a storage service on each storage element, and store them in a vector for further usage*/
-  std::vector<wrench::StorageService*> storage_services;
+  std::set<wrench::StorageService*> storage_services;
   for (auto s : storage_elements) {
     std::cerr << "Instantiating a SimpleStorageService on " << s << "..." << std::endl;
-    storage_services.push_back(simulation.add(new wrench::SimpleStorageService(s, 1.0e12))); // 1TB
+    storage_services.insert(simulation.add(new wrench::SimpleStorageService(s, 1.0e12))); // 1TB
   }
 
   std::map<std::string, std::vector<std::string>> hostname_by_cluster_list = simulation.getHostnameListByCluster();
@@ -45,11 +52,12 @@ int main(int argc, char** argv)
   /* Create a set of compute services that will be used by the WMS */
   std::set<wrench::ComputeService*> compute_services;
 
-  int i = 0;
   for (auto c : hostname_by_cluster_list) {
+    const char* close_SE_name        = simgrid::s4u::Host::by_name(c.second.front())->getProperty("closeSE");
+    wrench::StorageService* close_SE = getStorageServiceByname(storage_services, close_SE_name);
+
     wrench::ComputeService* batch_service =
-        new wrench::BatchService(c.second.front(), true, true, c.second,
-                                 storage_services.at(i++), // FIXME
+        new wrench::BatchService(c.second.front(), true, true, c.second, close_SE,
                                  {{wrench::BatchServiceProperty::STOP_DAEMON_MESSAGE_PAYLOAD, "2048"}});
     /* Add the compute services to the simulation, catching a possible exception */
     try {
@@ -76,7 +84,7 @@ int main(int argc, char** argv)
   wrench::WMS* wms = simulation.add(new wrench::VipWMS(
       std::unique_ptr<wrench::VipStandardJobScheduler>(new wrench::VipStandardJobScheduler(file_registry_service)),
       std::unique_ptr<wrench::VipPilotJobScheduler>(new wrench::VipPilotJobScheduler()), compute_services,
-      {storage_services.begin(), storage_services.end()}, file_registry_service, VIPServer));
+      storage_services, file_registry_service, VIPServer));
 
   /* Reading and parsing the workflow description file to create a wrench::Workflow object */
   std::cerr << "Loading workflow..." << std::endl;
@@ -97,14 +105,19 @@ int main(int argc, char** argv)
   for (auto f : input_files)
     std::cout << f.second->getId() << std::endl;
   std::cout.flush();
-
   try {
-    simulation.stageFile(input_files.at("gate.sh.tar.gz"), storage_services.at(2));
-    simulation.stageFile(input_files.at("gate.sh.tar.gz"), storage_services.at(4));
-    simulation.stageFile(input_files.at("gate.sh.tar.gz"), storage_services.at(0));
-    simulation.stageFile(input_files.at("release_Gate7.1_all.tar.gz"), storage_services.at(1));
-    simulation.stageFile(input_files.at("file-66406575341200.zip"), storage_services.at(3));
-    simulation.stageFile(input_files.at("merge.sh.tar.gz"), storage_services.at(0));
+    simulation.stageFile(input_files.at("gate.sh.tar.gz"),
+                         getStorageServiceByname(storage_services, "ccsrm02.in2p3.fr"));
+    simulation.stageFile(input_files.at("gate.sh.tar.gz"),
+                         getStorageServiceByname(storage_services, "marsedpm.in2p3.fr"));
+    simulation.stageFile(input_files.at("gate.sh.tar.gz"),
+                         getStorageServiceByname(storage_services, "tbn18.nikhef.nl"));
+    simulation.stageFile(input_files.at("release_Gate7.1_all.tar.gz"),
+                         getStorageServiceByname(storage_services, "bohr3226.tier2.hep.manchester.ac.uk"));
+    simulation.stageFile(input_files.at("file-66406575341200.zip"),
+                         getStorageServiceByname(storage_services, "dc2-grid-64.brunel.ac.uk"));
+    simulation.stageFile(input_files.at("merge.sh.tar.gz"),
+                         getStorageServiceByname(storage_services, "tbn18.nikhef.nl"));
   } catch (std::runtime_error& e) {
     std::cerr << "Exception: " << e.what() << std::endl;
     return 0;
