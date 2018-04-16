@@ -42,7 +42,7 @@ static void stageFilesFromCsv(wrench::Simulation* simulation, wrench::Workflow* 
 
       unsigned long long size = std::stoull(tokens[1]);
       std::vector<std::string> locations;
-      ;
+
       boost::split(locations, tokens[2], boost::is_any_of(":"), boost::token_compress_on);
 
       for (auto loc : locations) {
@@ -126,7 +126,7 @@ int main(int argc, char** argv)
   /* Reading and parsing the workflow description file to create a wrench::Workflow object */
   std::cerr << "Loading workflow..." << std::endl;
   wrench::Workflow workflow;
-  workflow.loadFromJSON(argv[2]);
+  workflow.loadFromJSON(argv[2], "1f");
   std::cerr << "The workflow has " << workflow.getNumberOfTasks() << " tasks " << std::endl;
   std::cerr.flush();
 
