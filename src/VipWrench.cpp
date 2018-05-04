@@ -112,8 +112,7 @@ int main(int argc, char** argv)
   std::string DefaultLFC = "lfc-biomed.in2p3.fr";
   std::cerr << "Instantiating a FileRegistryService on " << DefaultLFC << "..." << std::endl;
 
-  wrench::FileRegistryService* file_registry_service = new wrench::FileRegistryService(DefaultLFC);
-  simulation.setFileRegistryService(file_registry_service);
+  wrench::FileRegistryService* file_registry_service = simulation.add(new wrench::FileRegistryService(DefaultLFC));
 
   /* Instantiate a WMS, to be started on some host (wms_host), which is responsible for executing the workflow */
   std::string VIPServer = "vip.creatis.insa-lyon.fr";

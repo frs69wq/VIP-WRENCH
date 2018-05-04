@@ -29,7 +29,7 @@ VipWMS::VipWMS(std::unique_ptr<StandardJobScheduler> standard_job_scheduler,
 int VipWMS::main()
 {
 
-  TerminalOutput::setThisProcessLoggingColor(WRENCH_LOGGING_COLOR_GREEN);
+  TerminalOutput::setThisProcessLoggingColor(COLOR_GREEN);
 
   // Check whether the WMS has a deferred start time
   checkDeferredStart();
