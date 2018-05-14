@@ -31,12 +31,12 @@ void VipPilotJobScheduler::schedulePilotJobs(const std::set<ComputeService*>& co
   std::vector<WorkflowJob*> pilots;
 
   for (unsigned int i = 0; i < this->how_many; i++) {
-    pilots.push_back(static_cast<WorkflowJob*>(this->getJobManager()->createPilotJob(1, 1, 0.0, 36000)));
+    pilots.push_back(static_cast<WorkflowJob*>(this->getJobManager()->createPilotJob(1, 12, 0.0, 36000)));
   }
   std::map<std::string, std::string> batch_job_args;
   batch_job_args["-N"] = "1";
   batch_job_args["-t"] = "600"; // time in minutes
-  batch_job_args["-c"] = "1";   // number of cores per node
+  batch_job_args["-c"] = "12";   // number of cores per node
 
   for (auto it = pilots.begin() + 1; it != pilots.end(); ++it)
     this->getJobManager()->submitJob(*it, big_cluster, batch_job_args);

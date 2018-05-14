@@ -21,7 +21,7 @@ public:
   VipStandardJobScheduler(FileRegistryService* file_registry_service) : file_registry_service(file_registry_service) {}
 
   void scheduleTasks(const std::set<ComputeService*>& compute_services,
-                     const std::map<std::string, std::vector<WorkflowTask*>>& ready_tasks) override;
+                     const std::vector<WorkflowTask*>& ready_tasks) override;
 };
 }
 

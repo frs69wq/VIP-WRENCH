@@ -47,7 +47,7 @@ int VipWMS::main()
 
   while (true) {
     // Get the ready tasks
-    std::map<std::string, std::vector<WorkflowTask*>> ready_tasks = this->workflow->getReadyTasks();
+    std::vector<WorkflowTask*> ready_tasks = this->workflow->getReadyTasks();
 
     // Get the available compute services
     std::deque<ComputeService*>* compute_resources = this->getAvailableComputeResources();
@@ -55,8 +55,8 @@ int VipWMS::main()
     // Run ready tasks with defined scheduler implementation
     if (not ready_tasks.empty() && not compute_resources->empty()) {
       WRENCH_INFO("Scheduling tasks...");
-      std::map<std::string, std::vector<WorkflowTask*>> task;
-      task.insert({ready_tasks.begin()->first, ready_tasks.begin()->second});
+      std::vector<WorkflowTask*> task;
+      task.push_back(ready_tasks.front());
       this->standard_job_scheduler->scheduleTasks({compute_resources->front()}, task);
 
       compute_resources->pop_front();
